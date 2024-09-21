@@ -1,0 +1,5 @@
+server:
+ name: web_server
+
+
+from: resources_folder_in_jar

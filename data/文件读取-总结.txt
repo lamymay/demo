@@ -1,0 +1,98 @@
+类路径读取：适合读取应用程序内的资源。
+文件系统读取：用于读取本地文件，路径需要正确指定。
+JAR 包读取：可以通过 ClassLoader 方便地读取打包后的资源。
+Properties 和 YAML 解析：提供了方便的方式来处理配置文件。
+NIO：适合处理大文件的高效读取。
+
+
+
+YamlPropertiesFactoryBean yamlFactory = new YamlPropertiesFactoryBean();
+yamlFactory.setResources(new ClassPathResource(YML_FILE_01));
+Properties   properties = yamlFactory.getObject();
+
+
+
+在 Spring 项目中，多个配置文件中的相同键（key）的配置优先级通常按照以下顺序覆盖：
+
+命令行参数：通过命令行传递的参数优先级最高。
+Java 系统属性：使用 -D 参数设置的系统属性。
+环境变量：操作系统的环境变量。
+application-{profile}.yml 或 application-{profile}.properties：特定环境的配置文件（例如，application-dev.yml）。
+application.yml 或 application.properties：默认的配置文件。
+@Value 注解：使用 @Value 注解读取的配置值。
+配置类中的硬编码值：在配置类中直接设置的值。
+
+
+
+注意事项
+Profile：如果激活了特定的 Spring Profile（通过设置 spring.profiles.active），则相应的 {profile} 配置文件将覆盖默认配置。
+最后一个加载的配置生效：如果多个配置文件中的相同键被加载，后加载的配置会覆盖先加载的配置。
+总结
+通过这种优先级机制，Spring 允许开发者灵活地管理配置，确保更高优先级的配置可以覆盖较低优先级的配置。这样有助于在不同环境中进行灵活配置管理。
+
+
+//    public static Map<String, Object> loadConfig(File ... files) {
+//        if (files == null || files.length == 0) {
+//            log.warn("Provided files is null or empty.");
+//            return Collections.emptyMap();
+//        }
+//        Map<String, Object> configMap = new HashMap<>();
+//
+//        for (File itemMap : files) {
+//            Map<String, Object> itemMap = loadConfigFromLocal(itemMap);
+//            if(itemMap!=null) configMap.putAll(configMap);
+//
+//        }
+//        return configMap;
+//    }
+
+        //类路径或文件系统中的资源
+//        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+//        URL resourceUrl = classLoader.getResource(filePath.getAbsolutePath());
+
+            //InputStream   is =  new org.springframework.core.io.DefaultResourceLoader().getResource(path).getInputStream();
+
+
+
+
+//        Resource resource = resourceLoader.getResource("classpath:" + filePath);
+//    private String readFromLocal(Path path) {
+//        try {
+//            return Files.readString(path);
+//        } catch (IOException e) {
+//            log.error("Error reading file: {}", e.getMessage(), e);
+//            return null;
+//        }
+//    }
+//    public static String readFromJar(Resource resource) {
+//        StringBuilder content = new StringBuilder();
+//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(resource.getInputStream()))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                content.append(line).append("\n");
+//            }
+//        } catch (IOException e) {
+//            log.error("Error reading file: {}", e.getMessage(), e);
+//        }
+//        return content.toString();
+//    }
+//    public static Properties loadYamlPropertiesByYamlPropertiesFactoryBean(String... ymlFilePaths) {
+//        //避免了路径处理问题   //new FileSystemResource(ResourceUtils.CLASSPATH_URL_PREFIX + "config.yml");
+//        Resource[] resources = null;
+//        Properties properties = null;
+//        List<Resource> resourcesList = new ArrayList<Resource>();
+//        for (String location : ymlFilePaths) {
+//            Resource resource = new ClassPathResource(location);
+//            resourcesList.add(resource);
+//        }
+//        resources = resourcesList.toArray(new Resource[resourcesList.size()]);
+//        try {
+//            YamlPropertiesFactoryBean yamlFactory = new YamlPropertiesFactoryBean();
+//            yamlFactory.setResources(resources);
+//            properties = yamlFactory.getObject();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//        return properties;
+//    }

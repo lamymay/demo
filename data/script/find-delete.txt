@@ -1,0 +1,10 @@
+find /Users/may/Desktop/code/java/1/demo/ -name '*mvn*' -exec rm -fr {} \;
+
+关键点解释：
+SEARCH_DIR="/path/to/search"：指定你要查找的目录路径。可以将此路径更改为你想要扫描的目录。
+TARGET_NAME="target_name"：指定要查找的文件或目录名称。
+find "$SEARCH_DIR" -name "$TARGET_NAME"：find 命令从指定目录中查找与 TARGET_NAME 匹配的文件或目录。
+-exec rm -rf {} \;：-exec 选项用于对查找到的文件或目录执行命令。在这里使用 rm -rf 来递归地删除文件或目录，{} 是 find 传递的查找到的文件或目录的占位符。
+\;：这是命令的结束符，告诉 find 执行删除操作
+
+
